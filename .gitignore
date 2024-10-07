@@ -1,0 +1,52 @@
+# پوشه های باینری
+bin/
+obj/
+
+# فایل‌های کاربر
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# خروجی پلتفرم ها و فایل های اضافی سیستم عامل
+.vscode/
+.idea/
+*.swp
+*.sln.iml
+*.sln.cache
+.DS_Store
+Thumbs.db
+*.pidb
+*.userprefs
+*.ncrunchsolution
+*.localhistory
+/.vs/
+
+# فایل های پوشه publish یا خروجی
+publish/
+wwwroot/
+dist/
+out/
+
+# پوشه بسته‌های NuGet
+packages/
+.nuget/
+*.nupkg
+
+# فایل های لاگ و خروجی‌های موقت
+*.log
+*.tlog
+*.ide-helper
+*.temp
+*.tmp
+project.lock.json
+project.fragment.lock.json
+# مربوط به پوشه های تست و اجرای تست
+TestResults/
+__pycache__/
+
+# پوشه های لاگ اپلیکیشن ها
+*.log
+*.db
+*.sqlite
