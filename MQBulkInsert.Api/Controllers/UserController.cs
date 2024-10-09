@@ -12,6 +12,7 @@ namespace MQBulkInsert.WebApi.Controllers
         private readonly IMediator _mediator = mediator;
 
         [HttpPost]
+        [Route("Import")]
         public async Task<IActionResult> ImportAsync(IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -26,6 +27,7 @@ namespace MQBulkInsert.WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("CheckImportState")]
         public async Task<IActionResult> GetImportStatus(string trackingId)
         {
             var query = new ImportUserStatusQuery { TrackingId = trackingId };
