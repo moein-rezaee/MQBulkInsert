@@ -3,6 +3,7 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MQBulkInsert.Application.Common.Interfaces;
+using MQBulkInsert.Infrastructure.Messaging.Consumers.FileProcessing;
 using MQBulkInsert.Infrastructure.Persistence;
 
 namespace MQBulkInsert.Infrastructure;
@@ -15,16 +16,18 @@ public static class DependencyInjection
         {
             option.UsingRabbitMq((context, config) =>
             {
-                config.Host("localhost", "/", host =>
+                config.Host("rabbitmq://localhost", host =>
                 {
                     host.Username("admin");
                     host.Password("admin@123");
                 });
+
+                config.ConfigureEndpoints(context);
             });
+            option.AddConsumer<FileProcessingImportConsumer>();
         });
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-
 
         return services;
     }

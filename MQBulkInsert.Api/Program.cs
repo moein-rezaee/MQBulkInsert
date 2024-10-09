@@ -4,14 +4,10 @@ using MQBulkInsert.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMediatR(typeof(ApplicationAssemblyMarker).Assembly);
 builder.Services.AddControllers();
-// builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); // اطمینان از وجود رشته اتصال
+builder.Services.AddMediatR(typeof(ApplicationAssemblyMarker).Assembly);
 
 string? connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
 Environment.SetEnvironmentVariable("DB_CONNECTION_STRING", connectionString);
