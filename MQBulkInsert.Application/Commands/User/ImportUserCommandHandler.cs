@@ -44,7 +44,7 @@ public class ImportUserCommandHandler : IRequestHandler<ImportUserCommand, Guid>
 
         FileProcessingImportEvent fileImportEvent = new () {
             Id = record.Id,
-            FileName = record.FileName,
+            FilePath = filePath,
             Status = record.Status
         };
         await _bus.Publish(fileImportEvent, cancellationToken);
