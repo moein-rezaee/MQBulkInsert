@@ -8,5 +8,5 @@ public class User
     public required string Mobile { get; set; }
 
     public Guid FileTrackingId { get; set; }
-    public required FileProcessing File { get; set; }
+    public FileProcessing? File { get; set; }
 }
