@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MQBulkInsert.Application\MQBulkInsert.Application.csproj" />
+    <ProjectReference Include="..\MQBulkInsert.Infrastructure\MQBulkInsert.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

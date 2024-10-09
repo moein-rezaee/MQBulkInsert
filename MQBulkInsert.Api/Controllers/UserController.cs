@@ -20,13 +20,12 @@ namespace MQBulkInsert.WebApi.Controllers
             }
 
             var command = new ImportUserCommand { File = file };
-            var trakingId = await _mediator.Send(command);
+            var trackingId = await _mediator.Send(command);
 
-            return Ok($"File uploaded successfully. TrakingId: {trakingId}");
-
-            // return StatusCode(500, "An error occurred while uploading the file.");
+            return Ok($"File uploaded successfully. TrackingId: {trackingId}");
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetImportStatus(string trackingId)
         {
             var query = new ImportUserStatusQuery { TrackingId = trackingId };
