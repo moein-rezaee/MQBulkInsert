@@ -14,7 +14,7 @@ Environment.SetEnvironmentVariable("DB_CONNECTION_STRING", connectionString);
 
 if (!string.IsNullOrEmpty(connectionString))
     builder.Services
-        .AddInfrastructure(connectionString)
+        .AddInfrastructure(builder.Configuration)
         .AddApplication();
 else
     throw new Exception("connection string not found!");

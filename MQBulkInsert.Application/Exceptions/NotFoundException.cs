@@ -1,3 +1,5 @@
+namespace MQBulkInsert.Application.Exceptions;
+
 public class NotFoundException : Exception
 {
     public NotFoundException() : base() { }

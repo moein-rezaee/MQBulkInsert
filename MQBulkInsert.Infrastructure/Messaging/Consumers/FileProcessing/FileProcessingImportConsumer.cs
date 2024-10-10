@@ -3,6 +3,7 @@ using EFCore.BulkExtensions;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using MQBulkInsert.Application.Events.FileProcessing;
+using MQBulkInsert.Application.Exceptions;
 using MQBulkInsert.Domain.Entities;
 using MQBulkInsert.Domain.Enums;
 using MQBulkInsert.Infrastructure.Commands.FileHandling;
