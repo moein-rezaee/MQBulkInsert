@@ -9,7 +9,7 @@ public class FileProcessing
     public required string FileName { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? CompletedAt { get; set; }
-    public ProcessStatus Status { get; set; } = ProcessStatus.Processing;
+    public ProcessStatus Status { get; set; } = ProcessStatus.Pending;
 
     public ICollection<User>? Users { get; set; }
 }
