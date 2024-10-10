@@ -4,6 +4,8 @@ using MassTransit;
 using MediatR;
 using MQBulkInsert.Application.Common.Interfaces;
 using MQBulkInsert.Application.Events.FileProcessing;
+using MQBulkInsert.Application.FileHandling;
+using MQBulkInsert.Application.Models;
 using MQBulkInsert.Domain.Entities;
 
 namespace MQBulkInsert.Application.Commands.User;
@@ -23,28 +25,19 @@ public class ImportUserCommandHandler : IRequestHandler<ImportUserCommand, Guid>
     public async Task<Guid> Handle(ImportUserCommand request, CancellationToken cancellationToken)
     {
         // TODO: Set Upload Files Address in Settings
-        string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
-        if (!Directory.Exists(folderPath))
-        {
-            Directory.CreateDirectory(folderPath);
-        }
-        string fileName = request.File.FileName;
-        string fileExtension = Path.GetExtension(fileName);
-        string newName = request.TrackingId + fileExtension;
-        string filePath = Path.Combine(folderPath, newName);
-        using var stream = new FileStream(filePath, FileMode.Create);
-        await request.File.CopyToAsync(stream, cancellationToken);
+        string newFileName = request.TrackingId.ToString();
+        FileDetails details = await FileUploader.UploadToAsync(request.File, newFileName, cancellationToken);
 
         FileProcessing record = new() {
             Id = request.TrackingId,
-            FileName = newName
+            FileName = details.FullNewName
         }; 
         _context.Files.Add(record);
         await _context.SaveChangesAsync(cancellationToken);
 
         FileProcessingImportEvent fileImportEvent = new () {
             Id = record.Id,
-            FilePath = filePath,
+            FilePath = details.FullPath,
             Status = record.Status
         };
         await _bus.Publish(fileImportEvent, cancellationToken);

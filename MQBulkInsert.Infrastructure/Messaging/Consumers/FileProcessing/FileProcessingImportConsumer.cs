@@ -3,6 +3,7 @@ using EFCore.BulkExtensions;
 using MassTransit;
 using MQBulkInsert.Application.Events.FileProcessing;
 using MQBulkInsert.Domain.Entities;
+using MQBulkInsert.Infrastructure.Commands.FileHandling;
 using MQBulkInsert.Infrastructure.Persistence;
 using OfficeOpenXml;
 
@@ -24,9 +25,7 @@ public class FileProcessingImportConsumer : IConsumer<FileProcessingImportEvent>
         {
             try
             {
-                ExcelPackage.LicenseContext = LicenseContext.Commercial;
-                FileInfo info = new(filePath);
-                using ExcelPackage package = new(info);
+                using ExcelPackage package = FileExcelReader.GetInstance(filePath);
 
                 var worksheet = package.Workbook.Worksheets[0];
                 var rowCount = worksheet.Dimension.Rows;
