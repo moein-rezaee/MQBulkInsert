@@ -1,23 +1,44 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using MQBulkInsert.Application;
+using MQBulkInsert.Application.Validators.User;
 using MQBulkInsert.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+
+
+builder.Services.AddMediatR(typeof(Program).Assembly);
+
+
+builder.Services.AddFluentValidationAutoValidation();
+// builder.Services.AddValidatorsFromAssemblyContaining<ImportUserValidator>();
+
+// builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
+
 builder.Services.AddControllers();
-builder.Services.AddMediatR(typeof(ApplicationAssemblyMarker).Assembly);
+// builder.Services.Configure<ApiBehaviorOptions>(options =>
+// {
+//     options.SuppressModelStateInvalidFilter = true;
+// });
 
-string? connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
-Environment.SetEnvironmentVariable("DB_CONNECTION_STRING", connectionString);
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 104857600; // 100MB
+});
 
-if (!string.IsNullOrEmpty(connectionString))
-    builder.Services
-        .AddInfrastructure(builder.Configuration)
-        .AddApplication();
-else
-    throw new Exception("connection string not found!");
+
+builder.Services
+    .AddInfrastructure(builder.Configuration)
+    .AddApplication();
+
 
 var app = builder.Build();
 

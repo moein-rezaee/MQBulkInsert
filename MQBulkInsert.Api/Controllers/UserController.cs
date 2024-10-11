@@ -15,14 +15,8 @@ namespace MQBulkInsert.WebApi.Controllers
         [Route("Import")]
         public async Task<IActionResult> ImportAsync(IFormFile file)
         {
-            if (file == null || file.Length == 0)
-            {
-                return BadRequest("No file uploaded.");
-            }
-
             var command = new ImportUserCommand { File = file };
             var trackingId = await _mediator.Send(command);
-
             return Ok($"File uploaded successfully. TrackingId: {trackingId}");
         }
 
