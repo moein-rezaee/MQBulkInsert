@@ -3,10 +3,10 @@ using System.Xml.Linq;
 using MassTransit;
 using MediatR;
 using MQBulkInsert.Application.Common.Interfaces;
-using MQBulkInsert.Application.Events.FileProcessing;
 using MQBulkInsert.Application.FileHandling;
 using MQBulkInsert.Application.Models;
 using MQBulkInsert.Domain.Entities;
+using MQBulkInsert.Domain.Events.FileProcessing;
 
 namespace MQBulkInsert.Application.Commands.User;
 

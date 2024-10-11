@@ -13,21 +13,17 @@ namespace MQBulkInsert.WebApi.Controllers
 
         [HttpPost]
         [Route("Import")]
-        public async Task<IActionResult> ImportAsync(IFormFile file)
+        public async Task<IActionResult> ImportAsync([FromForm]ImportUserCommand command)
         {
-            var command = new ImportUserCommand { File = file };
-            var trackingId = await _mediator.Send(command);
-            return Ok($"File uploaded successfully. TrackingId: {trackingId}");
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
 
         [HttpGet]
         [Route("CheckImportState")]
-        public async Task<IActionResult> GetImportStatus(string trackingId)
-        {
-            var query = new ImportUserStatusQuery { TrackingId = trackingId };
-            var status = await _mediator.Send(query);
-
-            return Ok(status);
+        public async Task<IActionResult> GetImportStatus([FromQuery]ImportUserStatusQuery query) {
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
     }
 }

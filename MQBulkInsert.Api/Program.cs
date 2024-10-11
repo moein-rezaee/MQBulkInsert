@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using MQBulkInsert.Api.Middlewares;
 using MQBulkInsert.Application;
 using MQBulkInsert.Application.Validators.User;
 using MQBulkInsert.Infrastructure;
@@ -23,16 +24,21 @@ builder.Services.AddFluentValidationAutoValidation();
 
 // builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
 
+ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
+ValidatorOptions.Global.DefaultClassLevelCascadeMode = CascadeMode.Stop;
+
 builder.Services.AddControllers();
-// builder.Services.Configure<ApiBehaviorOptions>(options =>
-// {
-//     options.SuppressModelStateInvalidFilter = true;
-// });
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 
 builder.Services.Configure<FormOptions>(options =>
 {
     options.MultipartBodyLengthLimit = 104857600; // 100MB
 });
+
+builder.Services.AddTransient<ErrorHandlingMiddleware>();
 
 
 builder.Services
@@ -41,6 +47,7 @@ builder.Services
 
 
 var app = builder.Build();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
