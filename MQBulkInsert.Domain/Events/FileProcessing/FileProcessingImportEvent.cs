@@ -1,7 +1,7 @@
 using System;
 using MQBulkInsert.Domain.Enums;
 
-namespace MQBulkInsert.Application.Events.FileProcessing;
+namespace MQBulkInsert.Domain.Events.FileProcessing;
 
 public class FileProcessingImportEvent
 {

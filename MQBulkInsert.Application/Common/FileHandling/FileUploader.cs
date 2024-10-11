@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore.Http;
 using MQBulkInsert.Application.Models;
 
-namespace MQBulkInsert.Application.FileHandling;
+namespace MQBulkInsert.Application.Common.FileHandling;
 
 public class FileUploader(IFormFile file)
 {

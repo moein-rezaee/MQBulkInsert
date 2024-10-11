@@ -1,4 +1,3 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using MQBulkInsert.Application.Common.Interfaces;
 using MQBulkInsert.Domain.Entities;
