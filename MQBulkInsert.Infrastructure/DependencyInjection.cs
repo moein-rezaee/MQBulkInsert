@@ -1,4 +1,3 @@
-using System;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +6,8 @@ using MQBulkInsert.Application.Common.Interfaces;
 using MQBulkInsert.Infrastructure.Messaging.Consumers.FileProcessing;
 using MQBulkInsert.Infrastructure.Persistence;
 using MQBulkInsert.Application.Exceptions;
+using MQBulkInsert.Application.Common.Interfaces.Repositories;
+using MQBulkInsert.Infrastructure.Persistence.Repositories;
 
 namespace MQBulkInsert.Infrastructure;
 
@@ -35,7 +36,9 @@ public static class DependencyInjection
         });
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IFileProcessRepository, FileProcessRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
 
