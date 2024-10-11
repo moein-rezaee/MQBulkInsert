@@ -19,15 +19,7 @@ public class UnitOfWork : IUnitOfWork
         FileProcessRepository = fileProcessRepository;
     }
 
+    public async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();
 
-
-    public async Task BulkInsertAsync(IEnumerable<User> users)
-    {
-        await _context.BulkInsertAsync(users);
-    }
-
-    public async Task<int> SaveChangesAsync()
-    {
-        return await _context.SaveChangesAsync();
-    }
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken) => await _context.SaveChangesAsync(cancellationToken);
 }
