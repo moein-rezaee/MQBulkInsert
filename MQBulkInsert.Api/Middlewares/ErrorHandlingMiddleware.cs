@@ -72,11 +72,11 @@ namespace MQBulkInsert.Api.Middlewares;
 // }
 
 
-public class ErrorHandlingMiddleware : IMiddleware
+public class SendResponse : IMiddleware
 {
-    private readonly ILogger<ErrorHandlingMiddleware> _logger;
+    private readonly ILogger<SendResponse> _logger;
 
-    public ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger)
+    public SendResponse(ILogger<SendResponse> logger)
     {
         _logger = logger;
     }
@@ -90,6 +90,10 @@ public class ErrorHandlingMiddleware : IMiddleware
         catch (ValidationException ex)
         {
             await HandleValidationExceptionAsync(context, ex);
+        }
+        catch (FileNotFoundException)
+        {
+            await HandleNotFoundExceptionAsync(context, ex);
         }
         catch (Exception ex)
         {
@@ -106,14 +110,25 @@ public class ErrorHandlingMiddleware : IMiddleware
             e.ErrorMessage
         }).ToList();
         var result = JsonConvert.SerializeObject(new { errors });
-        context.Response.ContentType = "application/json";
-        await context.Response.WriteAsync(result);
+        SendResponse(context, result);
+    }
+    private Task HandleNotFoundExceptionAsync(HttpContext context, Exception ex)
+    {
+        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+        _logger.LogError(ex, ex.Message);
+        var result = JsonConvert.SerializeObject(new { message = ex.Message });
+        SendResponse(context, result);
     }
     private Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
         _logger.LogError(ex, ex.Message);
         var result = JsonConvert.SerializeObject(new { message = "خطای سرور. لطفا با پشتیبانی تماس بگیرید." });
+        SendResponse(context, result);
+    }
+
+    private SendResponse(HttpContext context, object result)
+    {
         context.Response.ContentType = "application/json";
         return context.Response.WriteAsync(result);
     }

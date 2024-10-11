@@ -38,7 +38,7 @@ builder.Services.Configure<FormOptions>(options =>
     options.MultipartBodyLengthLimit = 104857600; // 100MB
 });
 
-builder.Services.AddTransient<ErrorHandlingMiddleware>();
+builder.Services.AddTransient<SendResponse>();
 
 
 builder.Services
@@ -47,7 +47,7 @@ builder.Services
 
 
 var app = builder.Build();
-app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<SendResponse>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
